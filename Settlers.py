@@ -45,6 +45,9 @@ settle = ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", 
           "*", "*", "*", "*", "*", "*", "*", "*"]
 road = ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
         "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"]
+hand1 = []
+hand2 = []
+hand3 = []
 # Create squares and board
 for i in range(0, len(numbers)):
     num = random.choice(numbers)
@@ -53,6 +56,16 @@ for i in range(0, len(numbers)):
     numbers.remove(num)
     hexes.append(square(num, res, False))
 
+def roll():
+    rolls = str(random.randint(2, 12))
+    while rolls == "7":
+        rolls = str(random.randint(2, 12))
+    return rolls
+
+def hand():
+    print(hand1)
+    print(hand2)
+    print(hand3)
 
 def board():
     print("1            2            3            4            5")
@@ -121,9 +134,26 @@ for j in range(0, 2):
         road[rode] = roads[i]
         board()
 
+# Logic for starting cards
+for i in range(0, 3):
+    for a in range(0, len(settle)):
+        if settle[a] != "*":
+            if a == players[0]:
+                hand1.append[hexes[a].resource]
+            if a == players[1]:
+                hand1.append[hexes[a].resource]
+            if a == players[2]:
+                hand1.append[hexes[a].resource]
 
+hand()
+
+
+victory_count = 0
 #  Main game loop
 while True:
     print("Now let's get started!")
     print("Turn order will go " + players[0] + players[1] + players[2])
+    while victory_count < 10:
+        for i in range(0, 3):
+            print(players[i] + " \'s turn. They rolled a " + roll)
     break

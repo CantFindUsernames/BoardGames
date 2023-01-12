@@ -44,10 +44,12 @@ hexes = []
 settle = ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*",
           "*", "*", "*", "*", "*", "*", "*", "*"]
 road = ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
-        "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"]
+        "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-",
+        "-", "-", "-", "-", "-"]
 hand1 = []
 hand2 = []
 hand3 = []
+hands = [hand1, hand2, hand3]
 # Create squares and board
 for i in range(0, len(numbers)):
     num = random.choice(numbers)
@@ -56,16 +58,29 @@ for i in range(0, len(numbers)):
     numbers.remove(num)
     hexes.append(square(num, res, False))
 
+
 def roll():
     rolls = str(random.randint(2, 12))
     while rolls == "7":
         rolls = str(random.randint(2, 12))
-    return rolls
+    print(rolls)
 
-def hand():
-    print(hand1)
-    print(hand2)
-    print(hand3)
+
+def hand(number):
+    if number < 10:
+        number = " " + str(number)
+    for item in range(0, len(hexes)):
+        if hexes[item].numb == number:
+            for person in range(0, len(players)):
+                if settle[item + (item // 4 + 1)].lower() == players[person] or settle[item + (item // 4)].lower() == players[person] or settle[item + (item // 4 + 5)].lower() == players[person] or settle[item + (item // 4 + 6)].lower() == players[person]:
+                    hands[person].append(hexes[item].resource)
+                if settle[item + (item // 4 + 1)].upper() == players[person] or settle[item + (item // 4)].upper() == players[person] or settle[item + (item // 4 + 5)].upper() == players[person] or settle[item + (item // 4 + 6)].upper() == players[person]:
+                    hands[person].append(hexes[item].resource)
+                    hands[person].append(hexes[item].resource)
+    for i in range(0, 3):
+        print(players[i] + ": ", end="")
+        print(hands[i])
+
 
 def board():
     print("1            2            3            4            5")
@@ -76,15 +91,16 @@ def board():
             print("1      1")
             print(road[p], end=" ")
             break
-        print(settle[p], "    ", road[p], end="     ") # variables are correct up to here for roads. Must correct from here on. Settlements are done
+        print(settle[p], "    ", road[p],
+              end="     ")  # variables are correct up to here for roads. Must correct from here on. Settlements are done
     c = 0
     for item in hexes:
         if c % 4 == 0 and c != 0:
-            print("         ", c//2)
+            print("         ", c // 2)
             for i in range(0, 5):
                 if i == 4:
                     print(settle[((c // 4) * 5) + i], end="    ")
-                    print(c // 4 + 1, "    ", (c//4 + 1) * 2 - 1)
+                    print(c // 4 + 1, "    ", (c // 4 + 1) * 2 - 1)
                     print(road[((c // 4) * 5) + i + (4 * (c // 4))], "", end="")
                     break
                 print(settle[((c // 4) * 5) + i], "    ", road[((c // 4) * 5) + i + (4 * (c // 4))], end="     ")
@@ -109,20 +125,23 @@ print()
 print()
 board()
 print("Now it's time to place:")
-firstP = input("Input lowercase character for player one. The lowercase will represent a settlement, the uppercase a city:")
-secondP = input("Input lowercase character for player two. The lowercase will represent a settlement, the uppercase a city:")
-thirdP = input("Input lowercase character for player three. The lowercase will represent a settlement, the uppercase a city:")
+firstP = input(
+    "Input lowercase character for player one. The lowercase will represent a settlement, the uppercase a city:")
+secondP = input(
+    "Input lowercase character for player two. The lowercase will represent a settlement, the uppercase a city:")
+thirdP = input(
+    "Input lowercase character for player three. The lowercase will represent a settlement, the uppercase a city:")
 firstR = input("Input lowercase character for player one. The lowercase will represent a road:")
 secondR = input("Input lowercase character for player two. The lowercase will represent a road:")
 thirdR = input("Input lowercase character for player three. The lowercase will represent a road:")
-players = [firstP, secondP, thirdP]
+players = [firstP.lower(), secondP.lower(), thirdP.lower()]
 roads = [firstR, secondR, thirdR]
 for j in range(0, 2):
     for i in range(0, 3):
         settles = input("Location of " + players[i] + "\'s " + str(j + 1) + " settlement(xy):")
         x = int(settles[0])
         y = int(settles[1])
-        settle[((y*5) - (5 - x)) - 1] = players[i]
+        settle[((y * 5) - (5 - x)) - 1] = players[i]
         board()
         rode = input("Location of " + players[i] + "\'s" + str(j + 1) + " road(xy)")
         x = int(rode[0])
@@ -135,25 +154,16 @@ for j in range(0, 2):
         board()
 
 # Logic for starting cards
-for i in range(0, 3):
-    for a in range(0, len(settle)):
-        if settle[a] != "*":
-            if a == players[0]:
-                hand1.append[hexes[a].resource]
-            if a == players[1]:
-                hand1.append[hexes[a].resource]
-            if a == players[2]:
-                hand1.append[hexes[a].resource]
-
-hand()
-
+for i in range(2, 12):
+    hand(i)
 
 victory_count = 0
 #  Main game loop
-while True:
-    print("Now let's get started!")
-    print("Turn order will go " + players[0] + players[1] + players[2])
-    while victory_count < 10:
-        for i in range(0, 3):
-            print(players[i] + " \'s turn. They rolled a " + roll)
+print("Now let's get started!")
+print("Turn order will go " + players[0] + players[1] + players[2])
+while victory_count < 10:
+    for i in range(0, 3):
+        print(players[i] + " \'s turn. They rolled a " + str(roll))
+        break
     break
+

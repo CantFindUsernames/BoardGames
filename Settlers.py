@@ -124,7 +124,7 @@ def hand(number):
             for p in range(0, len(players)):
                 if settle[index].lower() == players[p].name or settle[index + 1].lower() == players[p].name or settle[index + 5].lower() == players[p].name or settle[index + 6].lower() == players[p].name:
                     players[p].hander.append(hexes[item].resource)
-                if settle[index].upper() == players[p].name or settle[index + 1].upper() == players[p].name or settle[index + 5].upper() == players[p].name or settle[index + 6].upper() == players[p].name:
+                if settle[index] == players[p].name.upper() or settle[index + 1] == players[p].name.upper() or settle[index + 5] == players[p].name.upper() or settle[index + 6] == players[p].name.upper():
                     players[p].hander.append(hexes[item].resource)
                     players[p].hander.append(hexes[item].resource)
 
@@ -211,21 +211,23 @@ for h in hands:
     h.append("brick")
 
 
-vic1 = 0
-vic2 = 0
-vic3 = 0
+vic1 = 2
+vic2 = 2
+vic3 = 2
 victory_points = [vic1, vic2, vic3]
 firstP = people(firstP, hand1, vic1)
 secondP = people(secondP, hand2, vic2)
 thirdP = people(thirdP, hand3, vic3)
 players = [firstP, secondP, thirdP]
 print(players[0].name)
+win = False
 hand(0)
 #  Main game loop
 print("Now let's get started!")
 print("Turn order will go " + players[0].name + ", " + players[1].name + ", " + players[2].name)
 while True:
     for i in range(0, 3):
+        blank()
         board()
         print(players[i].name + " \'s turn. They rolled a " + roll())
         hand(roll())
@@ -245,9 +247,11 @@ while True:
                 type = input("Would you like to build a city(c), settlement(s), or a road(r).")
                 location = input("Please enter the coordinates you would like to place it:")
                 build(type, players[i], location)
-            elif turn == "q":  #  Makes it the next players turn
-                break
-        for score in range(0, len(victory_points)):
-            if players[score].score >= 10:
-                print("Game is over! " + players[score].name + " won! They got ten victory points!")
-                break
+        for player in players:
+            if player.score >= 10:
+                print("Game is over! " + player.name + " won! They got ten victory points!")
+                win = True
+        if win is True:
+            break
+    if win is True:
+        break

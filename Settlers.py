@@ -21,6 +21,11 @@ def blank():
     print()
     print()
     print()
+    print()
+    print()
+    print()
+    print()
+    print()
 
 
 WAIT = 0
@@ -106,9 +111,9 @@ def build(building, player, location):
 
 
 def roll():
-    rolls = str(random.randint(2, 12))
-    while rolls == "7":
-        rolls = str(random.randint(2, 12))
+    rolls = random.randint(2, 12)
+    while rolls == 7:
+        rolls = random.randint(2, 12)
     return rolls
 
 
@@ -229,8 +234,9 @@ while True:
     for i in range(0, 3):
         blank()
         board()
-        print(players[i].name + " \'s turn. They rolled a " + roll())
-        hand(roll())
+        numbered = roll()
+        print(players[i].name + " \'s turn. They rolled a " + str(numbered))
+        hand(numbered)
         turn = "You chumpy idiot!"
         while turn != "q":
             turn = input("Would you like to trade(t), build(b), or end your turn(q)?")
@@ -249,6 +255,7 @@ while True:
                 build(type, players[i], location)
         for player in players:
             if player.score >= 10:
+                blank()
                 print("Game is over! " + player.name + " won! They got ten victory points!")
                 win = True
         if win is True:
